@@ -6,17 +6,17 @@ import java.util.Date;
 @Entity
 @Table(name = "doctor")
 public class Doctor {
-    private long id;
+    private Long id;
     private String name;
     private String specialization;
-    private double yearsOfExperience;
+    private Double yearsOfExperience;
 
-    private boolean leave;
+    private Integer leave;
     private Date leaveDate;
 
     public Doctor() {}
 
-    public Doctor(long id, String name,String specialization ,double yearsOfExperience, boolean leave, Date leaveDate) {
+    public Doctor(Long id, String name,String specialization ,Double yearsOfExperience, int leave, Date leaveDate) {
         this.id = id;
         this.name = name;
         this.specialization = specialization;
@@ -27,11 +27,11 @@ public class Doctor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
     @Column
@@ -55,16 +55,16 @@ public class Doctor {
         return yearsOfExperience;
     }
 
-    public void setYearsOfExperience(double yearsOfExperience) {
+    public void setYearsOfExperience(Double yearsOfExperience) {
         this.yearsOfExperience = yearsOfExperience;
     }
 
-    @Column
-    public boolean isLeave() {
+    @Column(name ="isLeave")
+    public Integer getLeave() {
         return leave;
     }
 
-    public void setLeave(boolean leave) {
+    public void setLeave(Integer leave) {
         this.leave = leave;
     }
 
