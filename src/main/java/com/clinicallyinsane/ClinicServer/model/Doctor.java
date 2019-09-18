@@ -1,5 +1,7 @@
 package com.clinicallyinsane.ClinicServer.model;
 
+import org.springframework.beans.factory.annotation.Value;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -11,12 +13,12 @@ public class Doctor {
     private String specialization;
     private double yearsOfExperience;
 
-    private boolean leave;
+    private int leave;
     private Date leaveDate;
 
     public Doctor() {}
 
-    public Doctor(long id, String name,String specialization ,double yearsOfExperience, boolean leave, Date leaveDate) {
+    public Doctor(long id, String name,String specialization ,double yearsOfExperience, int leave, Date leaveDate) {
         this.id = id;
         this.name = name;
         this.specialization = specialization;
@@ -50,7 +52,7 @@ public class Doctor {
     public void setName(String name) {
         this.name = name;
     }
-    @Column
+    @Column(name ="years_of_experience")
     public double getYearsOfExperience() {
         return yearsOfExperience;
     }
@@ -59,16 +61,16 @@ public class Doctor {
         this.yearsOfExperience = yearsOfExperience;
     }
 
-    @Column
-    public boolean isLeave() {
+    @Column(name = "is_Leave")
+    public int getLeave() {
         return leave;
     }
 
-    public void setLeave(boolean leave) {
+    public void setLeave(int leave) {
         this.leave = leave;
     }
 
-    @Column
+    @Column(name = "leave_date")
     public Date getLeaveDate() {
         return leaveDate;
     }
