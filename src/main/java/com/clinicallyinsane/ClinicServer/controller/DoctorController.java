@@ -67,6 +67,8 @@ public class DoctorController {
         doctorRepository.delete(doctor);
         return ResponseEntity.ok().build();
     }
+    
+    
 
 
 }
