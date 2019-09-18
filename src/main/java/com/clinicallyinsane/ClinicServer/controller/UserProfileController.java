@@ -51,6 +51,44 @@ public class UserProfileController {
 		return ResponseEntity.ok().body(userProfile);
 	}
 	
+	/*
+	Function returns the userProfile entered and sends to the database to be saved
+	User Profile Repository interface provides the save method
+	 */
+	@PostMapping("/UserProfiles")
+	public UserProfile addUserProfile(@Valid @RequestBody UserProfile userProfile) {
+		return userProfileRepository.save(userProfile);
+	}
 	
+	/*
+	Function allows for a user to update their permanent address, phone number, and present address
+	The user's id is passed through the url path, and the new user is passed through the method
+	
+	 */
+	@PutMapping("/UserProfiles/{id}")
+	public ResponseEntity<UserProfile> updateUserProfile(@PathVariable(value = "id") Long userId, 
+			  											 @Valid @RequestBody UserProfile userProfileDetails)
+			  											 throws ResourceNotFoundException{
+		UserProfile userProfile = userProfileRepository.findById(userId)
+				  .orElseThrow(()-> new ResourceNotFoundException("UserProfile not found with id:" + userId));
+		userProfile.setPermanentAddress(userProfileDetails.getPermanentAddress());
+		userProfile.setPhoneNumber(userProfileDetails.getPhoneNumber());
+		userProfile.setPresentAddress(userProfileDetails.getPresentAddress());
+		final UserProfile updatedUserProfile = userProfileRepository.save(userProfile);
+		return ResponseEntity.ok(updatedUserProfile);
+	}
+	
+	/*
+	Function adds delete functionality to the controller
+	User id is passed through the url path, which is found with the repository's method find by id
+	Then, the repository's method delete allows us to pass the found user profile through the method
+	 */
+	@DeleteMapping("/UserProfiles/{id}")
+	public ResponseEntity deleteUserProfile(@PathVariable(value = "id") Long userId) throws ResourceNotFoundException{
+		UserProfile userProfile = userProfileRepository.findById(userId)
+				  .orElseThrow(()-> new ResourceNotFoundException("UserProfile not found with id:" + userId));
+		userProfileRepository.delete(userProfile);
+        return ResponseEntity.ok().build();
+	}
 	
 }
