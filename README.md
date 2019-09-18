@@ -26,6 +26,13 @@ Running Instructions:
    Just execute using run.
    
    
+   After Cloning:
+   
+        Create your own branch and do not touch master, if merging create pull requests
+        
+
+        
+   
  
       
      
