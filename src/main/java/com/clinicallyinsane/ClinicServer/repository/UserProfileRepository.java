@@ -5,5 +5,5 @@ import com.clinicallyinsane.ClinicServer.model.UserProfile;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 @Repository
-public interface UserProfileRepository extends JpaRepository<UserProfile, Long>{
+public interface UserProfileRepository extends JpaRepository<UserProfile, Integer>{
 }
