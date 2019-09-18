@@ -1,6 +1,6 @@
 package com.clinicallyinsane.ClinicServer.model;
 
-import java.util.Date;
+import java.sql.Date;
 
 import javax.persistence.*;
 
@@ -9,17 +9,19 @@ import javax.persistence.*;
 public class UserProfile {
 	private int userID;
 	private String name;
-	private Date date;
+	private Date DOB;
 	private String gender, presentAddress, permanentAddress;
 	private int phoneNumber;
 	private String emailId;
 	
-	public UserProfile(int userID, String name, Date date, String gender, String presentAddress,
+	public UserProfile() {}
+	
+	public UserProfile(int userID, String name, Date DOB, String gender, String presentAddress,
 			String permanentAddress, int phoneNumber, String emailId) {
 		super();
 		this.userID = userID;
 		this.name = name;
-		this.date = date;
+		this.DOB = DOB;
 		this.gender = gender;
 		this.presentAddress = presentAddress;
 		this.permanentAddress = permanentAddress;
@@ -47,12 +49,12 @@ public class UserProfile {
 	}
 
 	@Column
-	public Date getDate() {
-		return date;
+	public Date getDOB() {
+		return DOB;
 	}
 
-	public void setDate(Date date) {
-		this.date = date;
+	public void setDOB(Date DOB) {
+		this.DOB = DOB;
 	}
 
 	@Column
@@ -102,7 +104,7 @@ public class UserProfile {
 
 	@Override
 	public String toString() {
-		return "UserProfile [userID=" + userID + ", name=" + name + ", date=" + date + ", gender=" + gender
+		return "UserProfile [userID=" + userID + ", name=" + name + ", DOB=" + DOB + ", gender=" + gender
 				+ ", presentAddress=" + presentAddress + ", permanentAddress=" + permanentAddress + ", phoneNumber="
 				+ phoneNumber + ", emailId=" + emailId + "]";
 	}
