@@ -38,7 +38,7 @@ public class AdminController {
 	}*/
 	
 	 @GetMapping("/admin/{id}")
-	    public ResponseEntity<Doctor> getDoctorById(@PathVariable(value = "id") Long doctorId, @Valid @RequestBody Doctor doctorDetails) throws
+	    public ResponseEntity<Doctor> getDoctorById(@PathVariable(value = "id") Long doctorId, @Valid Doctor doctorDetails) throws
 	            ResourceNotFoundException {
 		 
 	        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()-> new ResourceNotFoundException("Doctor not found for this id:" + doctorId));
