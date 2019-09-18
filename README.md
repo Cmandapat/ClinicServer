@@ -9,6 +9,8 @@ First time cloners:
 Running Instructions:
 
   Console instructions:
+  
+  
     mvn clean package install
       -> java jar target/ClinicServer-0.0.1-SNAPSHOT.jar
       
@@ -19,7 +21,12 @@ Running Instructions:
     
 
    IDE:
+   
+   
    Just execute using run.
+   
+   
+ 
       
      
 
