@@ -51,6 +51,7 @@ public class UserProfileController {
 		return ResponseEntity.ok().body(userProfile);
 	}
 	
+	
 	/*
 	Function returns the userProfile entered and sends to the database to be saved
 	User Profile Repository interface provides the save method
