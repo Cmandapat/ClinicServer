@@ -33,6 +33,7 @@ public class UserProfileController {
 		return userProfileRepository.findAll();
 	}
 	
+	
 	/*
 	Function returns a User Profile with a specific id 
 	Param id gets passed via the url path through to user id
