@@ -2,7 +2,10 @@ package com.clinicallyinsane.ClinicServer.controller;
 
 import com.clinicallyinsane.ClinicServer.exception.ResourceNotFoundException;
 import com.clinicallyinsane.ClinicServer.model.Admin;
+import com.clinicallyinsane.ClinicServer.model.Appointment;
 import com.clinicallyinsane.ClinicServer.repository.AdminRepository;
+import com.clinicallyinsane.ClinicServer.repository.AppointmentRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.ResponseEntity;
@@ -20,8 +23,9 @@ import java.util.List;
 @RequestMapping("/api/ad")
 public class AdminController {
 
-	//@Autowired
-//	private AdminRepository adminRepository;
+	@Autowired
+	private AppointmentRepository appointmentRepository;
+	
 	@Autowired
 	private DoctorRepository doctorRepository;
 	
@@ -30,13 +34,11 @@ public class AdminController {
 		
 		return doctorRepository.findAll();
 	}
-//	public List<Admin> getAllAdmins(){
-//		
-//		return adminRepository.findAll();
-//	}
-	/*public List<Appointments> getAllAppointements(){
-		retrun appointmentRepository.findAll();
-	}*/
+	
+	@GetMapping("/admin/appt")
+	public List<Appointment> getAllAppointements(){
+		return appointmentRepository.findAll();
+	}
 	
 	 @GetMapping("/admin/{id}")
 	    public ResponseEntity<Doctor> getDoctorById(@PathVariable(value = "id") Long doctorId, @Valid Doctor doctorDetails) throws
