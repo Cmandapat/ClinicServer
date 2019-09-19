@@ -59,7 +59,7 @@
 			<resource>
 
 				<directory>src/resources</directory>
-         master
+				
 			</resource>
 		</resources>
 	</build>
