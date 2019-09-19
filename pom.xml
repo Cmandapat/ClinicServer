@@ -46,6 +46,8 @@
 		</dependency>
 	</dependencies>
 
+
+
 	<build>
 		<plugins>
 			<plugin>
@@ -55,9 +57,9 @@
 		</plugins>
 		<resources>
 			<resource>
-				<directory>
-					src/resources
-				</directory>
+
+				<directory>src/resources</directory>
+         master
 			</resource>
 		</resources>
 	</build>
