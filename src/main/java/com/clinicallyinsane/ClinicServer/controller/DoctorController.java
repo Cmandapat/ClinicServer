@@ -62,7 +62,8 @@ public class DoctorController {
 
     }
 
-    @DeleteMapping("/doctors/{id}")
+    @SuppressWarnings("rawtypes")
+	@DeleteMapping("/doctors/{id}")
     public ResponseEntity deleteDoctor(@PathVariable(value ="id") Long doctorId) throws ResourceNotFoundException {
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(() -> new ResourceNotFoundException("Doctor Not found:" + doctorId));
         doctorRepository.delete(doctor);
