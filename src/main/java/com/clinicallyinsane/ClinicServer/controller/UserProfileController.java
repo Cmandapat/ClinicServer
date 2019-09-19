@@ -17,6 +17,7 @@ import com.clinicallyinsane.ClinicServer.repository.UserProfileRepository;
 All urls calling this controller should have the format localhost:xxxx/api/up/*
 * being any mapping required for following functions
  */
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/up")
 public class UserProfileController {
