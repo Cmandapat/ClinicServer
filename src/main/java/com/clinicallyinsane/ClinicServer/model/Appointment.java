@@ -29,8 +29,9 @@ public class Appointment {
 
     //look out for the Auto
 
-   // @GeneratedValue(strategy = GenerationType.AUTO)
+   //
    @Id
+   @GeneratedValue(strategy = GenerationType.AUTO)
     public long getApptID() {
         return apptID;
     }
