@@ -1,6 +1,6 @@
 package com.clinicallyinsane.ClinicServer.controller;
 
-import com.clinicallyinsane.ClinicServer.exception.ResourceNotFoundException;
+import com.clinicallyinsane.ClinicServer.exception.*;
 import com.clinicallyinsane.ClinicServer.model.Doctor;
 import com.clinicallyinsane.ClinicServer.repository.DoctorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/d")
 public class DoctorController {
@@ -33,9 +34,9 @@ public class DoctorController {
      * can also return a status code via: ResponseEntity.ok().build() --> returns a status 200 code;
      * */
     @GetMapping("/doctors/{id}")
-    public ResponseEntity<Doctor> getDoctorById(@PathVariable(value = "id") Long doctorId, @Valid @RequestBody Doctor doctorDetails) throws
+    public ResponseEntity<Doctor> getDoctorById(@PathVariable(value = "id") Long id,@Valid Doctor doctorDetails) throws
             ResourceNotFoundException {
-        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()-> new ResourceNotFoundException("Doctor not found for this id:" + doctorId));
+        Doctor doctor = doctorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Doctor not found for this id:" + id));
 
         return ResponseEntity.ok().body(doctor);
     }
@@ -67,6 +68,8 @@ public class DoctorController {
         doctorRepository.delete(doctor);
         return ResponseEntity.ok().build();
     }
+    
+    
 
 
 }
