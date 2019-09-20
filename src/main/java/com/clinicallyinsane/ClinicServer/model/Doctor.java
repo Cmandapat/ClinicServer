@@ -13,18 +13,20 @@ public class Doctor {
     private String specialization;
     private double yearsOfExperience;
 
-    private int leave;
-    private Date leaveDate;
+    private Integer leave;
+    private Date startLeaveDate;
+    private Date endLeaveDate;
 
     public Doctor() {}
 
-    public Doctor(long id, String name,String specialization ,double yearsOfExperience, int leave, Date leaveDate) {
+    public Doctor(long id, String name,String specialization ,double yearsOfExperience, Integer leave, Date startLeaveDate, Date endLeaveDate) {
         this.id = id;
         this.name = name;
         this.specialization = specialization;
         this.yearsOfExperience = yearsOfExperience;
         this.leave = leave;
-        this.leaveDate = leaveDate;
+        this.startLeaveDate = startLeaveDate;
+        this.endLeaveDate = endLeaveDate;
     }
 
     @Id
@@ -62,20 +64,29 @@ public class Doctor {
     }
 
     @Column(name = "is_Leave")
-    public int getLeave() {
+    public Integer getLeave() {
         return leave;
     }
 
-    public void setLeave(int leave) {
+    public void setLeave(Integer leave) {
         this.leave = leave;
     }
 
-    @Column(name = "leave_date")
-    public Date getLeaveDate() {
-        return leaveDate;
+    @Column(name = "startLeave_date")
+    public Date getStartLeaveDate() {
+        return startLeaveDate;
     }
 
-    public void setLeaveDate(Date leaveDate) {
-        this.leaveDate = leaveDate;
+    public void setStartLeaveDate(Date startLeaveDate) {
+        this.startLeaveDate = startLeaveDate;
+    }
+    
+    @Column(name = "endLeave_date")
+    public Date getEndLeaveDate() {
+        return endLeaveDate;
+    }
+
+    public void setEndLeaveDate(Date startEndLeaveDate) {
+        this.endLeaveDate = endLeaveDate;
     }
 }

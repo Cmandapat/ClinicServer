@@ -12,19 +12,21 @@ import javax.persistence.Table;
 public class Reporter {
 	
 	private long id;
-	private int leave;
-	private Date leaveDate;
+	private Integer leave;
+	private Date startLeaveDate;
+	private Date endLeaveDate;
 	
 	public Reporter() {
 		super();
 		
 	}
 
-	public Reporter(long id, int leave, Date leaveDate) {
+	public Reporter(long id, Integer leave, Date startLeaveDate, Date endLeaveDate) {
 		super();
 		this.id = id;
 		this.leave = leave;
-		this.leaveDate = leaveDate;
+		this.startLeaveDate = startLeaveDate;
+		this.endLeaveDate = endLeaveDate;
 	}
 	
 	@Id
@@ -38,23 +40,33 @@ public class Reporter {
 	}
 
 	@Column(name = "is_Leave")
-	public int getLeave() {
+	public Integer getLeave() {
 		return leave;
 	}
 	
 	
-	public void setLeave(int leave) {
+	public void setLeave(Integer leave) {
 		this.leave = leave;
 	}
 	
-	@Column(name = "leave_date")
-	public Date getLeaveDate() {
-		return leaveDate;
+	@Column(name = "startLeave_date")
+	public Date getStartLeaveDate() {
+		return startLeaveDate;
 	}
 	
 	
-	public void setLeaveDate(Date leaveDate) {
-		this.leaveDate = leaveDate;
+	public void setStartLeaveDate(Date startLeaveDate) {
+		this.startLeaveDate = startLeaveDate;
+	}
+	
+	@Column(name = "endLeave_date")
+	public Date getEndLeaveDate() {
+		return startLeaveDate;
+	}
+	
+	
+	public void setEndLeaveDate(Date endLeaveDate) {
+		this.endLeaveDate = endLeaveDate;
 	}
 
 	@Override

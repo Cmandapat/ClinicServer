@@ -27,7 +27,8 @@ public class ReporterController {
 
         Reporter reporter = reporterRepository.findById(doctorId).orElseThrow(()-> new ResourceNotFoundException("Doctor not found::" + doctorId));
         reporter.setLeave(doctorDetails.getLeave());
-        reporter.setLeaveDate(doctorDetails.getLeaveDate());
+        reporter.setStartLeaveDate(doctorDetails.getStartLeaveDate());
+        reporter.setEndLeaveDate(doctorDetails.getEndLeaveDate());
         final Reporter updatedDoctor = reporterRepository.save(reporter);
         return ResponseEntity.ok(updatedDoctor);
 
