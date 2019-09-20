@@ -1,27 +1,65 @@
 package com.clinicallyinsane.ClinicServer.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.hibernate.annotations.GenericGenerator;
+
 import java.util.Date;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 
 @Entity
-@Table(name = "UserProfile")
+@Table(name = "user_profile")
 public class UserProfile {
-	private int userID;
-	private String name;
-	private Date DOB;
-	private String gender, presentAddress, permanentAddress;
+	@Id
+	@GeneratedValue(generator = "uuid")
+	@GenericGenerator(name ="uuid",strategy = "org.hibernate.id.UUIDGenerator" )
+	@Column(name ="id")
+	private String userID;
+	@Column(name = "first_name")
+	@Size(max = 100)
+	private String firstName;
+	@Column(name = "last_name")
+	private String lastName;
+	@Column
+	@JsonFormat(pattern="MM-dd-yyyy")
+	private Date dob;
+
+	@Column
+	@Size(max = 6)
+	private String gender;
+
+	@Column(name = "present_address")
+	@Size(max = 100)
+	private String presentAddress;
+	@Column(name = "permanent_address")
+	@Size(max = 100)
+	private String permanentAddress;
+
+	@Column(name = "phone")
 	private int phoneNumber;
+	@Column(name = "email")
+	@Size(max = 100)
 	private String emailId;
+
+	@OneToOne(fetch = FetchType.LAZY,
+			cascade = CascadeType.ALL,mappedBy = "userProfile")
+	private UserCredentials userCredentials;
+
+
+
+	@OneToOne(fetch = FetchType.LAZY,
+			cascade = CascadeType.ALL,mappedBy = "userProfile")
+	private Appointment appointment;
+
 	
 	public UserProfile() {}
-	
-	public UserProfile(int userID, String name, Date DOB, String gender, String presentAddress,
-			String permanentAddress, int phoneNumber, String emailId) {
-		super();
+
+	public UserProfile(String userID, String firstName, String lastName, Date dob, String gender, String presentAddress, String permanentAddress, int phoneNumber, String emailId) {
 		this.userID = userID;
-		this.name = name;
-		this.DOB = DOB;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.dob = dob;
 		this.gender = gender;
 		this.presentAddress = presentAddress;
 		this.permanentAddress = permanentAddress;
@@ -29,73 +67,72 @@ public class UserProfile {
 		this.emailId = emailId;
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	public int getUserID() {
+	public String getUserID() {
 		return userID;
 	}
 
-	public void setUserID(int userID) {
+	public String getFirstName() {
+		return firstName;
+	}
+
+	public String getLastName() {
+		return lastName;
+	}
+
+	public Date getDob() {
+		return dob;
+	}
+
+	public String getGender() {
+		return gender;
+	}
+
+	public String getPresentAddress() {
+		return presentAddress;
+	}
+
+	public String getPermanentAddress() {
+		return permanentAddress;
+	}
+
+	public int getPhoneNumber() {
+		return phoneNumber;
+	}
+
+	public String getEmailId() {
+		return emailId;
+	}
+
+	public void setUserID(String userID) {
 		this.userID = userID;
 	}
 
-	@Column	
-	public String getName() {
-		return name;
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 
-	@Column
-	public Date getDOB() {
-		return DOB;
-	}
-
-	public void setDOB(Date DOB) {
-		this.DOB = DOB;
-	}
-
-	@Column
-	public String getGender() {
-		return gender;
+	public void setDob(Date dob) {
+		this.dob = dob;
 	}
 
 	public void setGender(String gender) {
 		this.gender = gender;
 	}
 
-	@Column
-	public String getPresentAddress() {
-		return presentAddress;
-	}
-
 	public void setPresentAddress(String presentAddress) {
 		this.presentAddress = presentAddress;
-	}
-
-	@Column
-	public String getPermanentAddress() {
-		return permanentAddress;
 	}
 
 	public void setPermanentAddress(String permanentAddress) {
 		this.permanentAddress = permanentAddress;
 	}
 
-	@Column
-	public int getPhoneNumber() {
-		return phoneNumber;
-	}
-
 	public void setPhoneNumber(int phoneNumber) {
 		this.phoneNumber = phoneNumber;
-	}
-
-	@Column
-	public String getEmailId() {
-		return emailId;
 	}
 
 	public void setEmailId(String emailId) {
@@ -104,10 +141,16 @@ public class UserProfile {
 
 	@Override
 	public String toString() {
-		return "UserProfile [userID=" + userID + ", name=" + name + ", DOB=" + DOB + ", gender=" + gender
-				+ ", presentAddress=" + presentAddress + ", permanentAddress=" + permanentAddress + ", phoneNumber="
-				+ phoneNumber + ", emailId=" + emailId + "]";
+		return "UserProfile{" +
+				"userID='" + userID + '\'' +
+				", firstName='" + firstName + '\'' +
+				", lastName='" + lastName + '\'' +
+				", dob=" + dob +
+				", gender='" + gender + '\'' +
+				", presentAddress='" + presentAddress + '\'' +
+				", permanentAddress='" + permanentAddress + '\'' +
+				", phoneNumber=" + phoneNumber +
+				", emailId='" + emailId + '\'' +
+				'}';
 	}
-	
-	
 }

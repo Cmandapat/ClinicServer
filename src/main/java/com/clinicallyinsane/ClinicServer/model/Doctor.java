@@ -2,33 +2,55 @@ package com.clinicallyinsane.ClinicServer.model;
 
 
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "doctor")
+@Table()
 public class Doctor {
-    private long id;
-    private String name;
-    private String specialization;
-    private double yearsOfExperience;
-
-    private int leave;
-    private Date leaveDate;
-
-    public Doctor() {}
-
-    public Doctor(long id, String name,String specialization ,double yearsOfExperience, int leave, Date leaveDate) {
-        this.id = id;
-        this.name = name;
-        this.specialization = specialization;
-        this.yearsOfExperience = yearsOfExperience;
-        this.leave = leave;
-        this.leaveDate = leaveDate;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    @Column(name = "first_name")
+    private String firstName;
+    @Column(name = "last_name")
+    private String lastName;
+    @Column
+    private String specialization;
+    @Column(name = "years_of_experience")
+    private double yearsOfExperience;
+
+    @Column(name = "on_leave")
+    private int leave;
+
+    @Column(name = "leave_start",columnDefinition="date default null")
+    private Date leaveStartDate;
+    @Column(name = "leave_end",columnDefinition="date default null")
+    private Date leaveEndDate;
+
+//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+//    @JoinColumn(name = "doctor_id")
+//    @OnDelete(action = OnDeleteAction.CASCADE)
+//    private Appointment appointment;
+
+    public Doctor() {
+    }
+
+    public Doctor(long id, String firstName, String lastName, String specialization, double yearsOfExperience, int leave, Date leaveStartDate, Date leaveEndDate) {
+        this.id = id;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.specialization = specialization;
+        this.yearsOfExperience = yearsOfExperience;
+        this.leave = leave;
+        this.leaveStartDate = leaveStartDate;
+        this.leaveEndDate = leaveEndDate;
+    }
+
     public long getId() {
         return id;
     }
@@ -36,11 +58,23 @@ public class Doctor {
     public void setId(long id) {
         this.id = id;
     }
-    @Column
-    public String getName() {
-        return name;
+
+    public String getFirstName() {
+        return firstName;
     }
-    @Column
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public String getSpecialization() {
         return specialization;
     }
@@ -49,10 +83,6 @@ public class Doctor {
         this.specialization = specialization;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-    @Column(name ="years_of_experience")
     public double getYearsOfExperience() {
         return yearsOfExperience;
     }
@@ -61,7 +91,6 @@ public class Doctor {
         this.yearsOfExperience = yearsOfExperience;
     }
 
-    @Column(name = "is_Leave")
     public int getLeave() {
         return leave;
     }
@@ -70,12 +99,19 @@ public class Doctor {
         this.leave = leave;
     }
 
-    @Column(name = "leave_date")
-    public Date getLeaveDate() {
-        return leaveDate;
+    public Date getLeaveStartDate() {
+        return leaveStartDate;
     }
 
-    public void setLeaveDate(Date leaveDate) {
-        this.leaveDate = leaveDate;
+    public void setLeaveStartDate(Date leaveStartDate) {
+        this.leaveStartDate = leaveStartDate;
+    }
+
+    public Date getLeaveEndDate() {
+        return leaveEndDate;
+    }
+
+    public void setLeaveEndDate(Date leaveEndDate) {
+        this.leaveEndDate = leaveEndDate;
     }
 }

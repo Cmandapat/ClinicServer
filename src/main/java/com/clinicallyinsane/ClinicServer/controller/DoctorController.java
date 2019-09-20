@@ -34,7 +34,7 @@ public class DoctorController {
      * can also return a status code via: ResponseEntity.ok().build() --> returns a status 200 code;
      * */
     @GetMapping("/doctors/{id}")
-    public ResponseEntity<Doctor> getDoctorById(@PathVariable(value = "id") Long id,@Valid Doctor doctorDetails) throws
+    public ResponseEntity<Doctor> getDoctorById(@PathVariable(value = "id") Long id) throws
             ResourceNotFoundException {
         Doctor doctor = doctorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Doctor not found for this id:" + id));
 
@@ -57,6 +57,19 @@ public class DoctorController {
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()-> new ResourceNotFoundException("Doctor not found::" + doctorId));
         doctor.setYearsOfExperience(doctorDetails.getYearsOfExperience());
         doctor.setSpecialization(doctorDetails.getSpecialization());
+        final Doctor updatedDoctor = doctorRepository.save(doctor);
+        return ResponseEntity.ok(updatedDoctor);
+
+    }
+
+    @PutMapping("/doctors/reporter/{id}")
+    public ResponseEntity<Doctor> updateDoctorLeave(@PathVariable(value = "id") Long doctorId,
+                                                 @Valid @RequestBody Doctor doctorDetails) throws ResourceNotFoundException{
+
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()-> new ResourceNotFoundException("Doctor not found::" + doctorId));
+        doctor.setLeave(doctorDetails.getLeave());
+        doctor.setLeaveStartDate(doctorDetails.getLeaveStartDate());
+        doctor.setLeaveEndDate(doctorDetails.getLeaveEndDate());
         final Doctor updatedDoctor = doctorRepository.save(doctor);
         return ResponseEntity.ok(updatedDoctor);
 

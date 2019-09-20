@@ -13,6 +13,7 @@ import com.clinicallyinsane.ClinicServer.model.Appointment;
 import javax.validation.Valid;
 import java.util.List;
 
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/a")
 public class AppointmentController {

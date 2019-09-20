@@ -43,7 +43,7 @@ public class UserProfileController {
 	ResponseEntity is returned with the User Profile we received
 	 */
 	@GetMapping("/UserProfiles/{id}")
-	public ResponseEntity<UserProfile> getUserProfileById(@PathVariable(value = "id") Integer userId, 
+	public ResponseEntity<UserProfile> getUserProfileById(@PathVariable(value = "id") String userId,
 														  @Valid @RequestBody UserProfile userProfileDetails)
 													      throws ResourceNotFoundException{
 		
@@ -69,7 +69,7 @@ public class UserProfileController {
 	
 	 */
 	@PutMapping("/UserProfiles/{id}")
-	public ResponseEntity<UserProfile> updateUserProfile(@PathVariable(value = "id") Integer userId, 
+	public ResponseEntity<UserProfile> updateUserProfile(@PathVariable(value = "id") String userId,
 			  											 @Valid @RequestBody UserProfile userProfileDetails)
 			  											 throws ResourceNotFoundException{
 		UserProfile userProfile = userProfileRepository.findById(userId)
@@ -87,7 +87,7 @@ public class UserProfileController {
 	Then, the repository's method delete allows us to pass the found user profile through the method
 	 */
 	@DeleteMapping("/UserProfiles/{id}")
-	public ResponseEntity deleteUserProfile(@PathVariable(value = "id") Integer userId) throws ResourceNotFoundException{
+	public ResponseEntity deleteUserProfile(@PathVariable(value = "id") String userId) throws ResourceNotFoundException{
 		UserProfile userProfile = userProfileRepository.findById(userId)
 				  .orElseThrow(()-> new ResourceNotFoundException("UserProfile not found with id:" + userId));
 		userProfileRepository.delete(userProfile);
