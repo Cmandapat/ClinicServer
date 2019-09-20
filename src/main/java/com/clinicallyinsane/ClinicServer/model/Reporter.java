@@ -57,7 +57,7 @@ public class Reporter {
 	
 	public void setStartLeaveDate(Date startLeaveDate) {
 		this.startLeaveDate = startLeaveDate;
-	}
+	} 
 	
 	@Column(name = "endLeave_date")
 	public Date getEndLeaveDate() {

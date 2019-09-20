@@ -38,7 +38,7 @@ public class DoctorController {
             ResourceNotFoundException {
         Doctor doctor = doctorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Doctor not found for this id:" + id));
 
-        return ResponseEntity.ok().body(doctor);
+        return ResponseEntity.ok().body(doctor); 
     }
 
 
