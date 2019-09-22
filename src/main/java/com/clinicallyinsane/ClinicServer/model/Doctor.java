@@ -2,11 +2,15 @@ package com.clinicallyinsane.ClinicServer.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table()
@@ -15,40 +19,45 @@ public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+
+    @NotNull
     @Column(name = "first_name")
     private String firstName;
+    @NotNull
     @Column(name = "last_name")
     private String lastName;
+    @NotNull
     @Column
     private String specialization;
+    @NotNull
     @Column(name = "years_of_experience")
     private double yearsOfExperience;
 
-    @Column(name = "on_leave")
+
+    @Column(name = "on_leave", columnDefinition = "int default '0'")
     private int leave;
 
-    @Column(name = "leave_start",columnDefinition="date default null")
-    private Date leaveStartDate;
-    @Column(name = "leave_end",columnDefinition="date default null")
-    private Date leaveEndDate;
 
-//    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-//    @JoinColumn(name = "doctor_id")
-//    @OnDelete(action = OnDeleteAction.CASCADE)
-//    private Appointment appointment;
+    @Column(name = "leave_start", columnDefinition = "varchar(255) default null")
+    private String leaveStartDate;
 
-    public Doctor() {
+    @Column(name = "leave_end", columnDefinition = "varchar(255) default null")
+    private String leaveEndDate;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "doctor", cascade = CascadeType.ALL)
+    private List<Appointment> appointmentList;
+
+
+    public List<Appointment> getAppointmentList() {
+        return appointmentList;
     }
 
-    public Doctor(long id, String firstName, String lastName, String specialization, double yearsOfExperience, int leave, Date leaveStartDate, Date leaveEndDate) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.specialization = specialization;
-        this.yearsOfExperience = yearsOfExperience;
-        this.leave = leave;
-        this.leaveStartDate = leaveStartDate;
-        this.leaveEndDate = leaveEndDate;
+    public void setAppointmentList(List<Appointment> appointmentList) {
+        this.appointmentList = appointmentList;
+    }
+
+    public Doctor() {
     }
 
     public long getId() {
@@ -99,19 +108,22 @@ public class Doctor {
         this.leave = leave;
     }
 
-    public Date getLeaveStartDate() {
+    public String getLeaveStartDate() {
         return leaveStartDate;
     }
 
-    public void setLeaveStartDate(Date leaveStartDate) {
+    public void setLeaveStartDate(String leaveStartDate) {
         this.leaveStartDate = leaveStartDate;
     }
 
-    public Date getLeaveEndDate() {
+    public String getLeaveEndDate() {
         return leaveEndDate;
     }
 
-    public void setLeaveEndDate(Date leaveEndDate) {
+    public void setLeaveEndDate(String leaveEndDate) {
         this.leaveEndDate = leaveEndDate;
     }
 }
+
+
+

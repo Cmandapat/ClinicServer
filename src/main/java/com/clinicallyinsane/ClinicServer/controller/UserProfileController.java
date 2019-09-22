@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.clinicallyinsane.ClinicServer.model.UserCredentials;
+import com.clinicallyinsane.ClinicServer.repository.UserCredentialsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,6 +26,9 @@ public class UserProfileController {
 	
 	@Autowired
 	private UserProfileRepository userProfileRepository;
+
+	@Autowired
+	private UserCredentialsRepository userCredentialsRepository;
 	
 	/*
 	Function is for returning all User Profiles from database
@@ -59,8 +64,16 @@ public class UserProfileController {
 	User Profile Repository interface provides the save method
 	 */
 	@PostMapping("/UserProfiles")
-	public UserProfile addUserProfile(@Valid @RequestBody UserProfile userProfile) {
-		return userProfileRepository.save(userProfile);
+	public ResponseEntity<UserCredentials> addUserProfile(@Valid @RequestBody UserProfile userProfile) {
+		userProfileRepository.save(userProfile);
+		UserCredentials userCredentials = new UserCredentials();
+		userCredentials.setId(userProfile.getUserID());
+		userCredentials.setUserProfile(userProfile);
+		userCredentials.setPassword(userProfile.getPassword());
+		String acctType = userCredentials.accountTypeChecker(userProfile.getCode());
+		userCredentials.setUserType(acctType);
+		userCredentialsRepository.save(userCredentials);
+		return  ResponseEntity.ok().body(userCredentials);
 	}
 	
 	/*

@@ -64,12 +64,25 @@ public class DoctorController {
 
     @PutMapping("/doctors/reporter/{id}")
     public ResponseEntity<Doctor> updateDoctorLeave(@PathVariable(value = "id") Long doctorId,
-                                                 @Valid @RequestBody Doctor doctorDetails) throws ResourceNotFoundException{
+                                                  @RequestBody Doctor doctorDetails) throws ResourceNotFoundException{
 
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()-> new ResourceNotFoundException("Doctor not found::" + doctorId));
         doctor.setLeave(doctorDetails.getLeave());
         doctor.setLeaveStartDate(doctorDetails.getLeaveStartDate());
         doctor.setLeaveEndDate(doctorDetails.getLeaveEndDate());
+        final Doctor updatedDoctor = doctorRepository.save(doctor);
+        return ResponseEntity.ok(updatedDoctor);
+
+    }
+
+    @PutMapping("/doctors/reporter/return/{id}")
+    public ResponseEntity<Doctor> updateDoctorReturn(@PathVariable(value = "id") Long doctorId,
+                                                    @RequestBody Doctor doctorDetails) throws ResourceNotFoundException{
+
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()-> new ResourceNotFoundException("Doctor not found::" + doctorId));
+        doctor.setLeave(doctorDetails.getLeave());
+        doctor.setLeaveStartDate(null);
+        doctor.setLeaveEndDate(null);
         final Doctor updatedDoctor = doctorRepository.save(doctor);
         return ResponseEntity.ok(updatedDoctor);
 
