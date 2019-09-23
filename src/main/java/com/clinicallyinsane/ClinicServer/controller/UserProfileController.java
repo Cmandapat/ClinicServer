@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.clinicallyinsane.ClinicServer.model.UserCredentials;
+import com.clinicallyinsane.ClinicServer.repository.UserCredentialsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +19,16 @@ import com.clinicallyinsane.ClinicServer.repository.UserProfileRepository;
 All urls calling this controller should have the format localhost:xxxx/api/up/*
 * being any mapping required for following functions
  */
+@CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/up")
 public class UserProfileController {
 	
 	@Autowired
 	private UserProfileRepository userProfileRepository;
+
+	@Autowired
+	private UserCredentialsRepository userCredentialsRepository;
 	
 	/*
 	Function is for returning all User Profiles from database
@@ -42,7 +48,7 @@ public class UserProfileController {
 	ResponseEntity is returned with the User Profile we received
 	 */
 	@GetMapping("/UserProfiles/{id}")
-	public ResponseEntity<UserProfile> getUserProfileById(@PathVariable(value = "id") Integer userId, 
+	public ResponseEntity<UserProfile> getUserProfileById(@PathVariable(value = "id") String userId,
 														  @Valid @RequestBody UserProfile userProfileDetails)
 													      throws ResourceNotFoundException{
 		
@@ -58,8 +64,16 @@ public class UserProfileController {
 	User Profile Repository interface provides the save method
 	 */
 	@PostMapping("/UserProfiles")
-	public UserProfile addUserProfile(@Valid @RequestBody UserProfile userProfile) {
-		return userProfileRepository.save(userProfile);
+	public ResponseEntity<UserCredentials> addUserProfile(@Valid @RequestBody UserProfile userProfile) {
+		userProfileRepository.save(userProfile);
+		UserCredentials userCredentials = new UserCredentials();
+		userCredentials.setId(userProfile.getUserID());
+		userCredentials.setUserProfile(userProfile);
+		userCredentials.setPassword(userProfile.getPassword());
+		String acctType = userCredentials.accountTypeChecker(userProfile.getCode());
+		userCredentials.setUserType(acctType);
+		userCredentialsRepository.save(userCredentials);
+		return  ResponseEntity.ok().body(userCredentials);
 	}
 	
 	/*
@@ -68,7 +82,7 @@ public class UserProfileController {
 	
 	 */
 	@PutMapping("/UserProfiles/{id}")
-	public ResponseEntity<UserProfile> updateUserProfile(@PathVariable(value = "id") Integer userId, 
+	public ResponseEntity<UserProfile> updateUserProfile(@PathVariable(value = "id") String userId,
 			  											 @Valid @RequestBody UserProfile userProfileDetails)
 			  											 throws ResourceNotFoundException{
 		UserProfile userProfile = userProfileRepository.findById(userId)
@@ -86,7 +100,7 @@ public class UserProfileController {
 	Then, the repository's method delete allows us to pass the found user profile through the method
 	 */
 	@DeleteMapping("/UserProfiles/{id}")
-	public ResponseEntity deleteUserProfile(@PathVariable(value = "id") Integer userId) throws ResourceNotFoundException{
+	public ResponseEntity deleteUserProfile(@PathVariable(value = "id") String userId) throws ResourceNotFoundException{
 		UserProfile userProfile = userProfileRepository.findById(userId)
 				  .orElseThrow(()-> new ResourceNotFoundException("UserProfile not found with id:" + userId));
 		userProfileRepository.delete(userProfile);
