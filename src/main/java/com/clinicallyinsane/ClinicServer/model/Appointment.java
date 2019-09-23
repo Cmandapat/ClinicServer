@@ -31,13 +31,13 @@ public class Appointment {
 
 
 
-    @JsonIgnore
-    @OneToOne(fetch=FetchType.LAZY)
+
+    @OneToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "patient_id")
     private UserProfile userProfile;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "doctor_id")
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Doctor doctor;

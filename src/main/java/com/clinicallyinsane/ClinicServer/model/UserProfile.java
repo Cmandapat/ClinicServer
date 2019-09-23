@@ -69,6 +69,17 @@ public class UserProfile {
 			cascade = CascadeType.ALL,mappedBy = "userProfile")
 	private UserCredentials userCredentials;
 
+	public UserCredentials getUserCredentials() {
+		return userCredentials;
+	}
+
+	public void setUserCredentials(UserCredentials userCredentials) {
+		this.userCredentials = userCredentials;
+	}
+
+	public void setCode(int code) {
+		this.code = code;
+	}
 
 	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY,
