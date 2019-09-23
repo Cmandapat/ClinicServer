@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -34,11 +35,24 @@ public class DoctorController {
      * can also return a status code via: ResponseEntity.ok().build() --> returns a status 200 code;
      * */
     @GetMapping("/doctors/{id}")
-    public ResponseEntity<Doctor> getDoctorById(@PathVariable(value = "id") Long id,@Valid Doctor doctorDetails) throws
+    public ResponseEntity<Doctor> getDoctorById(@PathVariable(value = "id") Long id) throws
             ResourceNotFoundException {
         Doctor doctor = doctorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Doctor not found for this id:" + id));
 
         return ResponseEntity.ok().body(doctor);
+    }
+
+    @GetMapping("/doctors/type/{type}")
+    public List<Doctor> getAllDoctorsRequestedType(@PathVariable(name = "type")String specialization) {
+        List<Doctor> doctors = doctorRepository.findAll();
+        List<Doctor> requestedDoctor = new ArrayList<Doctor>();
+        for(Doctor doc : doctors) {
+            if(doc.getSpecialization().equals(specialization)) {
+                requestedDoctor.add(doc);
+            }
+        }
+        return requestedDoctor;
+
     }
 
 
@@ -57,6 +71,32 @@ public class DoctorController {
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()-> new ResourceNotFoundException("Doctor not found::" + doctorId));
         doctor.setYearsOfExperience(doctorDetails.getYearsOfExperience());
         doctor.setSpecialization(doctorDetails.getSpecialization());
+        final Doctor updatedDoctor = doctorRepository.save(doctor);
+        return ResponseEntity.ok(updatedDoctor);
+
+    }
+
+    @PutMapping("/doctors/reporter/{id}")
+    public ResponseEntity<Doctor> updateDoctorLeave(@PathVariable(value = "id") Long doctorId,
+                                                  @RequestBody Doctor doctorDetails) throws ResourceNotFoundException{
+
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()-> new ResourceNotFoundException("Doctor not found::" + doctorId));
+        doctor.setLeave(doctorDetails.getLeave());
+        doctor.setLeaveStartDate(doctorDetails.getLeaveStartDate());
+        doctor.setLeaveEndDate(doctorDetails.getLeaveEndDate());
+        final Doctor updatedDoctor = doctorRepository.save(doctor);
+        return ResponseEntity.ok(updatedDoctor);
+
+    }
+
+    @PutMapping("/doctors/reporter/return/{id}")
+    public ResponseEntity<Doctor> updateDoctorReturn(@PathVariable(value = "id") Long doctorId,
+                                                    @RequestBody Doctor doctorDetails) throws ResourceNotFoundException{
+
+        Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()-> new ResourceNotFoundException("Doctor not found::" + doctorId));
+        doctor.setLeave(1);
+        doctor.setLeaveStartDate(null);
+        doctor.setLeaveEndDate(null);
         final Doctor updatedDoctor = doctorRepository.save(doctor);
         return ResponseEntity.ok(updatedDoctor);
 

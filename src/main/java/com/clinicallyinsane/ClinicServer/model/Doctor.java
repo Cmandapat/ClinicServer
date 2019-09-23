@@ -2,33 +2,64 @@ package com.clinicallyinsane.ClinicServer.model;
 
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.Date;
+import java.util.List;
 
 @Entity
-@Table(name = "doctor")
+@Table()
 public class Doctor {
-    private long id;
-    private String name;
-    private String specialization;
-    private double yearsOfExperience;
-
-    private int leave;
-    private Date leaveDate;
-
-    public Doctor() {}
-
-    public Doctor(long id, String name,String specialization ,double yearsOfExperience, int leave, Date leaveDate) {
-        this.id = id;
-        this.name = name;
-        this.specialization = specialization;
-        this.yearsOfExperience = yearsOfExperience;
-        this.leave = leave;
-        this.leaveDate = leaveDate;
-    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
+    @NotNull
+    @Column(name = "first_name")
+    private String firstName;
+    @NotNull
+    @Column(name = "last_name")
+    private String lastName;
+    @NotNull
+    @Column
+    private String specialization;
+    @NotNull
+    @Column(name = "years_of_experience")
+    private double yearsOfExperience;
+
+
+    @Column(name = "on_leave", columnDefinition = "int default '0'")
+    private int leave;
+
+
+    @Column(name = "leave_start", columnDefinition = "varchar(255) default null")
+    private String leaveStartDate;
+
+    @Column(name = "leave_end", columnDefinition = "varchar(255) default null")
+    private String leaveEndDate;
+
+    @JsonIgnore
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "doctor", cascade = CascadeType.ALL)
+    private List<Appointment> appointmentList;
+
+
+    public List<Appointment> getAppointmentList() {
+        return appointmentList;
+    }
+
+    public void setAppointmentList(List<Appointment> appointmentList) {
+        this.appointmentList = appointmentList;
+    }
+
+    public Doctor() {
+    }
+
     public long getId() {
         return id;
     }
@@ -36,11 +67,23 @@ public class Doctor {
     public void setId(long id) {
         this.id = id;
     }
-    @Column
-    public String getName() {
-        return name;
+
+    public String getFirstName() {
+        return firstName;
     }
-    @Column
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public String getSpecialization() {
         return specialization;
     }
@@ -49,10 +92,6 @@ public class Doctor {
         this.specialization = specialization;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-    @Column(name ="years_of_experience")
     public double getYearsOfExperience() {
         return yearsOfExperience;
     }
@@ -61,7 +100,6 @@ public class Doctor {
         this.yearsOfExperience = yearsOfExperience;
     }
 
-    @Column(name = "is_Leave")
     public int getLeave() {
         return leave;
     }
@@ -70,12 +108,22 @@ public class Doctor {
         this.leave = leave;
     }
 
-    @Column(name = "leave_date")
-    public Date getLeaveDate() {
-        return leaveDate;
+    public String getLeaveStartDate() {
+        return leaveStartDate;
     }
 
-    public void setLeaveDate(Date leaveDate) {
-        this.leaveDate = leaveDate;
+    public void setLeaveStartDate(String leaveStartDate) {
+        this.leaveStartDate = leaveStartDate;
+    }
+
+    public String getLeaveEndDate() {
+        return leaveEndDate;
+    }
+
+    public void setLeaveEndDate(String leaveEndDate) {
+        this.leaveEndDate = leaveEndDate;
     }
 }
+
+
+
