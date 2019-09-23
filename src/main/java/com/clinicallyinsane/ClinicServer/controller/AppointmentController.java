@@ -51,7 +51,35 @@ public class AppointmentController {
         return ResponseEntity.ok().body(appt);
     }
 
+    @GetMapping("/appointment/patient/{id}")
+    public ResponseEntity<Appointment> getPatientAppointment(@PathVariable(value = "id") String userId) throws ParseException{
+        List<Appointment> appointments = apptRepository.findAll();
+        for(Appointment app : appointments) {
+            System.out.println(app);
+        }
+        List<Appointment> patientAppointment = new ArrayList<>();
+        for(Appointment app : appointments) {
+            if(app.getUserProfile().getUserID().equals(userId)) {
+                patientAppointment.add(app);
+            }
+        }
 
+        Appointment appointment = patientAppointment.get(0);
+        DateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+        Date requestedDate = sdf.parse(appointment.getApptDate());
+        if(appointment.getDoctor().getLeave() == 1) {
+            Date doctorLeaveStartDate = sdf.parse(appointment.getDoctor().getLeaveStartDate());
+            Date doctorLeaveEndDate = sdf.parse(appointment.getDoctor().getLeaveEndDate());
+            if(doctorLeaveStartDate.compareTo(requestedDate) == 0 || doctorLeaveEndDate.compareTo(requestedDate) == 0) {
+                appointment.setDoctor(null);
+            } else if(requestedDate.compareTo(doctorLeaveStartDate) > 0 && requestedDate.compareTo(doctorLeaveEndDate) < 0) {
+                appointment.setDoctor(null);
+            }
+        }
+
+        apptRepository.save(appointment);
+        return ResponseEntity.ok().body(appointment);
+    }
 
     //assuming that patient id is handled and sent, apptID auto incremented
     @PostMapping("/appointment/{id}")
@@ -64,19 +92,11 @@ public class AppointmentController {
         * 1 = Leave
         * 0 = Not
         * */
-        System.out.println(appt.getApptTime());
-        System.out.println(appt.getApptDate());
         DateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
         Date requestedDate = sdf.parse(appt.getApptDate());
-//        DateFormat timeFormat = new SimpleDateFormat("HH:mm");
-//        Date requestedTime = timeFormat.parse(requestedStringArrayDate[1]);
         if(doctor.getLeave() == 1) {
             Date doctorLeaveStartDate = sdf.parse(doctor.getLeaveStartDate());
             Date doctorLeaveEndDate = sdf.parse(doctor.getLeaveEndDate());
-            System.out.println(requestedDate + "in test");
-            System.out.println(doctorLeaveStartDate);
-            System.out.println(doctorLeaveEndDate);
-
             if(doctorLeaveStartDate.compareTo(requestedDate) == 0 || doctorLeaveEndDate.compareTo(requestedDate) == 0) {
                 System.out.println("test");
                 return ResponseEntity.status(400).build();
@@ -110,10 +130,6 @@ public class AppointmentController {
                     }
                 }
             }
-
-
-
-
         }
             DoctorSchedule doctorSchedule = new DoctorSchedule();
             doctorSchedule.setDoctor(doctor);
@@ -150,12 +166,6 @@ public class AppointmentController {
         apptRepository.delete(appt);
         return ResponseEntity.ok().build();
     }
-
-
-
-
-
-
 
 
 }

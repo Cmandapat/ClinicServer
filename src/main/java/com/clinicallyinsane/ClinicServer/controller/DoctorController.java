@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
@@ -39,6 +40,19 @@ public class DoctorController {
         Doctor doctor = doctorRepository.findById(id).orElseThrow(()-> new ResourceNotFoundException("Doctor not found for this id:" + id));
 
         return ResponseEntity.ok().body(doctor);
+    }
+
+    @GetMapping("/doctors/type/{type}")
+    public List<Doctor> getAllDoctorsRequestedType(@PathVariable(name = "type")String specialization) {
+        List<Doctor> doctors = doctorRepository.findAll();
+        List<Doctor> requestedDoctor = new ArrayList<Doctor>();
+        for(Doctor doc : doctors) {
+            if(doc.getSpecialization().equals(specialization)) {
+                requestedDoctor.add(doc);
+            }
+        }
+        return requestedDoctor;
+
     }
 
 
@@ -80,7 +94,7 @@ public class DoctorController {
                                                     @RequestBody Doctor doctorDetails) throws ResourceNotFoundException{
 
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()-> new ResourceNotFoundException("Doctor not found::" + doctorId));
-        doctor.setLeave(doctorDetails.getLeave());
+        doctor.setLeave(1);
         doctor.setLeaveStartDate(null);
         doctor.setLeaveEndDate(null);
         final Doctor updatedDoctor = doctorRepository.save(doctor);

@@ -43,14 +43,14 @@ public class Appointment {
     private Doctor doctor;
 
     @Transient
-    private long doctorId;
+    private long doctorIdTest;
 
-    public void setDoctorId(long doctorId) {
-        this.doctorId = doctorId;
+    public void setDoctorId(long doctorIdTest) {
+        this.doctorIdTest = doctorIdTest;
     }
 
     public long getDoctorId() {
-        return doctorId;
+        return doctorIdTest;
     }
 
     public Appointment() {
