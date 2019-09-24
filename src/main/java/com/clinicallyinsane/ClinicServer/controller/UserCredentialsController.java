@@ -23,18 +23,24 @@ public class UserCredentialsController {
     private UserProfileRepository userProfileRepository;
 
 
-
+    /**
+     *
+     * @param userId -> used to find specific user
+     * @return -> single user
+     * @throws ResourceNotFoundException
+     */
     @GetMapping("/user/{id}")
     public ResponseEntity<UserCredentials> getUserById(@PathVariable(name = "id")String userId) throws ResourceNotFoundException {
         UserCredentials userCredentials = userCredentialsRepository.findById(userId).orElseThrow(()-> new ResourceNotFoundException("User not found for this id:" + userId));
         return ResponseEntity.ok().body(userCredentials);
     }
 
-    @PostMapping("/user")
-    public UserCredentials userAdd(@Valid @RequestBody UserCredentials userCredentials) {
-        return userCredentialsRepository.save(userCredentials);
-    }
-
+    /**
+     *
+     * @param userAttempt --> used to use grab password to attempt login and set login status == 1
+     * @return status code 200 otherwise a 400 bad request.
+     * @throws ResourceNotFoundException
+     */
     @PutMapping("/user/login")
     public ResponseEntity<UserCredentials> updateLogin(@RequestBody UserCredentials userAttempt) throws ResourceNotFoundException{
         String userId = userAttempt.getId();
@@ -53,6 +59,12 @@ public class UserCredentialsController {
 
     }
 
+    /**
+     *
+     * @param userId used to find userCredentials to set login status == 0
+     * @return status code 200; otherwise a 404;
+     * @throws ResourceNotFoundException
+     */
     @PutMapping("/user/logout/{id}")
     public ResponseEntity<UserCredentials> updateLogout(@PathVariable(name = "id") String userId) throws ResourceNotFoundException {
         UserCredentials account = userCredentialsRepository.findById(userId)

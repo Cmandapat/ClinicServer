@@ -2,19 +2,19 @@ package com.clinicallyinsane.ClinicServer.model;
 
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
 @Entity
 @Table()
-public class Doctor {
+public class Doctor implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,9 +44,11 @@ public class Doctor {
     @Column(name = "leave_end", columnDefinition = "varchar(255) default null")
     private String leaveEndDate;
 
+
     @JsonIgnore
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "doctor", cascade = CascadeType.ALL)
     private List<Appointment> appointmentList;
+
 
 
     public List<Appointment> getAppointmentList() {

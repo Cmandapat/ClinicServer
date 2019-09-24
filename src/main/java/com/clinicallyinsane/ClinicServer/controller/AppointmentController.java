@@ -105,32 +105,33 @@ public class AppointmentController {
                 return ResponseEntity.status(400).build();
             }
 
-            List<DoctorSchedule> doctorSchedules = doctorScheduleRepository.findAll();
-            //if its empty? lets have our first doctor in there.
-            if(doctorSchedules.isEmpty() || doctorSchedules == null) {
-                DoctorSchedule doctorSchedule = new DoctorSchedule();
-                doctorSchedule.setDoctor(doctor);
-                doctorSchedule.setAppointmentDate(appt.getApptDate());
-                doctorSchedule.setAppointmentTime(appt.getApptTime());
-                doctorScheduleRepository.save(doctorSchedule);
-            } else {
-                //now check if doctor is ready for appointment
-                List<DoctorSchedule> requestedDoctorSchedule = new ArrayList<DoctorSchedule>();
-                for(DoctorSchedule ds : doctorSchedules) {
-                    if(ds.getDoctor().getId() == doctor.getId()) {
-                        requestedDoctorSchedule.add(ds);
-                    }
-                 }
-                for(DoctorSchedule ds  : requestedDoctorSchedule) {
-                    Date dateRequested = sdf.parse(ds.getAppointmentDate());
-                    if(dateRequested.compareTo(requestedDate) == 0) {
-                        if(ds.getAppointmentTime().equals(appt.getApptTime())) {
-                            return ResponseEntity.status(400).build();
-                        }
+        }
+
+        List<DoctorSchedule> doctorSchedules = doctorScheduleRepository.findAll();
+        //if its empty? lets have our first doctor in there.
+        if(doctorSchedules.isEmpty() || doctorSchedules == null) {
+            DoctorSchedule doctorSchedule = new DoctorSchedule();
+            doctorSchedule.setDoctor(doctor);
+            doctorSchedule.setAppointmentDate(appt.getApptDate());
+            doctorSchedule.setAppointmentTime(appt.getApptTime());
+            doctorScheduleRepository.save(doctorSchedule);
+        }
+            //now check if doctor is ready for appointment
+            List<DoctorSchedule> requestedDoctorSchedule = new ArrayList<DoctorSchedule>();
+            for (DoctorSchedule ds : doctorSchedules) {
+                if (ds.getDoctor().getId() == doctor.getId()) {
+                    requestedDoctorSchedule.add(ds);
+                }
+            }
+            for (DoctorSchedule ds : requestedDoctorSchedule) {
+                Date dateRequested = sdf.parse(ds.getAppointmentDate());
+                if (dateRequested.compareTo(requestedDate) == 0) {
+                    if (ds.getAppointmentTime().equals(appt.getApptTime())) {
+                        return ResponseEntity.status(400).build();
                     }
                 }
             }
-        }
+
             DoctorSchedule doctorSchedule = new DoctorSchedule();
             doctorSchedule.setDoctor(doctor);
             doctorSchedule.setAppointmentDate(appt.getApptDate());
@@ -138,14 +139,10 @@ public class AppointmentController {
             doctorScheduleRepository.save(doctorSchedule);
             appt.setUserProfile(patient);
             appt.setDoctor(doctor);
-//            appt.setApptTime(appt.getApptTime());
-//            appt.setApptDate(appt.getApptDate());
-//            appt.setSymptoms(appt.getSymptoms());
             apptRepository.save(appt);
             return ResponseEntity.ok().body(appt);
 
-
-    }
+        }
 
 
     @PutMapping("/appointment/doctor/{apptId}")
@@ -157,8 +154,6 @@ public class AppointmentController {
         Appointment updatedAppointment = apptRepository.save(appt);
         return ResponseEntity.ok().build();
     }
-    //possibly updating Appointment
-
 
     @DeleteMapping("/appointment/{apptID}")
     public ResponseEntity deleteAppt(@PathVariable (value = "apptID") Long apptID) throws ResourceNotFoundException {

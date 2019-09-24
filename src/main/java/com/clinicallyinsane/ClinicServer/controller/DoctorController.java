@@ -20,20 +20,22 @@ public class DoctorController {
     private DoctorRepository doctorRepository;
 
     //url should look like localhost:xxxx/api/d/doctors
-    /****
-     * Function returns a list of all Doctors
-     * findAll() comes the JpaRepoistory Class
-     * */
+
+    /**
+     *
+     * @return list of all doctors
+     */
     @GetMapping("/doctors")
     public List<Doctor> getAllDoctors() {
         return doctorRepository.findAll();
     }
+
     /**
-     * @Params long doctorId
-     * read given Id to display a certain doctor
-     * returns doctor to the html body,
-     * can also return a status code via: ResponseEntity.ok().build() --> returns a status 200 code;
-     * */
+     *
+     * @param id used to find a specific doctor
+     * @return a doctor specified by id
+     * @throws ResourceNotFoundException
+     */
     @GetMapping("/doctors/{id}")
     public ResponseEntity<Doctor> getDoctorById(@PathVariable(value = "id") Long id) throws
             ResourceNotFoundException {
@@ -42,6 +44,12 @@ public class DoctorController {
         return ResponseEntity.ok().body(doctor);
     }
 
+    /**
+     * Basically our suggestDoctor() method
+     * Specify what doctor you were looking and pass into speciailization
+     * @param specialization ->
+     * @return a list of doctors based on that specialization;
+     */
     @GetMapping("/doctors/type/{type}")
     public List<Doctor> getAllDoctorsRequestedType(@PathVariable(name = "type")String specialization) {
         List<Doctor> doctors = doctorRepository.findAll();
@@ -56,14 +64,24 @@ public class DoctorController {
     }
 
 
-    /*
-    * @RequestBody takes input from FrontEnd into a doctor object
-    * */
+    /**
+     *
+     * @param doctor --> Doctor object used to create a new Doctor
+     * @return --> save doctor into database and return a 200 status code
+     */
     @PostMapping("/doctors")
     public Doctor addDoctor(@Valid @RequestBody Doctor doctor) {
         return doctorRepository.save(doctor);
     }
 
+
+    /**
+     *
+     * @param doctorId ->used to find doctor
+     * @param doctorDetails -> updated new years of experience and change specialization
+     * @return an updated doctor
+     * @throws ResourceNotFoundException
+     */
     @PutMapping("/doctors/{id}")
     public ResponseEntity<Doctor> updateDoctor(@PathVariable(value = "id") Long doctorId,
                                                @Valid @RequestBody Doctor doctorDetails) throws ResourceNotFoundException{
@@ -76,6 +94,13 @@ public class DoctorController {
 
     }
 
+    /**
+     *
+     * @param doctorId
+     * @param doctorDetails
+     * @return
+     * @throws ResourceNotFoundException
+     */
     @PutMapping("/doctors/reporter/{id}")
     public ResponseEntity<Doctor> updateDoctorLeave(@PathVariable(value = "id") Long doctorId,
                                                   @RequestBody Doctor doctorDetails) throws ResourceNotFoundException{
@@ -89,6 +114,13 @@ public class DoctorController {
 
     }
 
+    /**
+     *
+     * @param doctorId
+     * @param doctorDetails
+     * @return
+     * @throws ResourceNotFoundException
+     */
     @PutMapping("/doctors/reporter/return/{id}")
     public ResponseEntity<Doctor> updateDoctorReturn(@PathVariable(value = "id") Long doctorId,
                                                     @RequestBody Doctor doctorDetails) throws ResourceNotFoundException{
@@ -102,6 +134,12 @@ public class DoctorController {
 
     }
 
+    /**
+     *
+     * @param doctorId
+     * @return
+     * @throws ResourceNotFoundException
+     */
     @SuppressWarnings("rawtypes")
 	@DeleteMapping("/doctors/{id}")
     public ResponseEntity deleteDoctor(@PathVariable(value ="id") Long doctorId) throws ResourceNotFoundException {

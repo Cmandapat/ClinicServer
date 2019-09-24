@@ -19,6 +19,12 @@ public class DoctorScheduleController {
     @Autowired
     private DoctorScheduleRepository doctorScheduleRepository;
 
+    /**
+     *
+     * @param doctorId
+     * @return
+     * @throws ResourceNotFoundException
+     */
     @GetMapping("/schedule/{id}")
     public ResponseEntity<DoctorSchedule> findDoctorSchedule(@PathVariable(name ="id") Long doctorId)
     throws ResourceNotFoundException {
