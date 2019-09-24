@@ -43,7 +43,7 @@ public class AppointmentController {
     @GetMapping("/appointment")
     public List<Appointment> getAllAppointments() throws  ParseException{
         List<Appointment> appointments = apptRepository.findAll();
-        DateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         for(int i = 0; i < appointments.size(); i++) {
             if(appointments.get(i).getDoctor().getLeave() == 1) {
                 Date requestedDate = sdf.parse(appointments.get(i).getApptDate());
@@ -82,7 +82,7 @@ public class AppointmentController {
         }
 
         Appointment appointment = patientAppointment.get(0);
-        DateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date requestedDate = sdf.parse(appointment.getApptDate());
         if(appointment.getDoctor().getLeave() == 1) {
             Date doctorLeaveStartDate = sdf.parse(appointment.getDoctor().getLeaveStartDate());
@@ -109,16 +109,16 @@ public class AppointmentController {
         * 1 = Leave
         * 0 = Not
         * */
-        DateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date requestedDate = sdf.parse(appt.getApptDate());
         if(doctor.getLeave() == 1) {
             Date doctorLeaveStartDate = sdf.parse(doctor.getLeaveStartDate());
             Date doctorLeaveEndDate = sdf.parse(doctor.getLeaveEndDate());
             if(doctorLeaveStartDate.compareTo(requestedDate) == 0 || doctorLeaveEndDate.compareTo(requestedDate) == 0) {
-                System.out.println("test");
+
                 return ResponseEntity.status(400).build();
             } else if(requestedDate.compareTo(doctorLeaveStartDate) > 0 && requestedDate.compareTo(doctorLeaveEndDate) < 0) {
-                System.out.println("test2");
+
                 return ResponseEntity.status(400).build();
             }
 

@@ -84,7 +84,7 @@ public class DoctorController {
      */
     @PutMapping("/doctors/{id}")
     public ResponseEntity<Doctor> updateDoctor(@PathVariable(value = "id") Long doctorId,
-                                               @Valid @RequestBody Doctor doctorDetails) throws ResourceNotFoundException{
+                                               @RequestBody Doctor doctorDetails) throws ResourceNotFoundException{
 
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()-> new ResourceNotFoundException("Doctor not found::" + doctorId));
         doctor.setYearsOfExperience(doctorDetails.getYearsOfExperience());
