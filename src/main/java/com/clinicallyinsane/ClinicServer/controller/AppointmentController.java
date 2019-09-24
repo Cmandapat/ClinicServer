@@ -115,7 +115,7 @@ public class AppointmentController {
             doctorSchedule.setAppointmentDate(appt.getApptDate());
             doctorSchedule.setAppointmentTime(appt.getApptTime());
             doctorScheduleRepository.save(doctorSchedule);
-        }
+        } else {
             //now check if doctor is ready for appointment
             List<DoctorSchedule> requestedDoctorSchedule = new ArrayList<DoctorSchedule>();
             for (DoctorSchedule ds : doctorSchedules) {
@@ -131,6 +131,8 @@ public class AppointmentController {
                     }
                 }
             }
+        }
+
 
             DoctorSchedule doctorSchedule = new DoctorSchedule();
             doctorSchedule.setDoctor(doctor);
