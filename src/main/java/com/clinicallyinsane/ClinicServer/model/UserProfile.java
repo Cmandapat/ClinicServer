@@ -39,8 +39,8 @@ public class UserProfile {
 	private String lastName;
 	@NotNull
 	@Column
-	@JsonFormat(pattern="MM-dd-yyyy")
-	private Date dob;
+	@JsonFormat(pattern="yyyy-MM-dd")
+	private String dob;
 
 	@NotNull
 	@Column
@@ -103,7 +103,7 @@ public class UserProfile {
 
 	public UserProfile() {}
 
-	public UserProfile(String userID, String firstName, String lastName, Date dob, String gender, String presentAddress, String permanentAddress, int phoneNumber, String emailId) {
+	public UserProfile(String userID, String firstName, String lastName, String dob, String gender, String presentAddress, String permanentAddress, int phoneNumber, String emailId) {
 		this.userID = userID;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -127,7 +127,7 @@ public class UserProfile {
 		return lastName;
 	}
 
-	public Date getDob() {
+	public String getDob() {
 		return dob;
 	}
 
@@ -163,7 +163,7 @@ public class UserProfile {
 		this.lastName = lastName;
 	}
 
-	public void setDob(Date dob) {
+	public void setDob(String dob) {
 		this.dob = dob;
 	}
 
