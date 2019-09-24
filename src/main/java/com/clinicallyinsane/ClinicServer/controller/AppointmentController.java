@@ -41,15 +41,32 @@ public class AppointmentController {
     private DoctorScheduleRepository doctorScheduleRepository;
 
     @GetMapping("/appointment")
-    public List<Appointment> getAllAppointments() {
+    public List<Appointment> getAllAppointments() throws  ParseException{
+        List<Appointment> appointments = apptRepository.findAll();
+        DateFormat sdf = new SimpleDateFormat("MM-dd-yyyy");
+        for(int i = 0; i < appointments.size(); i++) {
+            if(appointments.get(i).getDoctor().getLeave() == 1) {
+                Date requestedDate = sdf.parse(appointments.get(i).getApptDate());
+                Date doctorLeaveStartDate = sdf.parse(appointments.get(i).getDoctor().getLeaveStartDate());
+                Date doctorLeaveEndDate = sdf.parse(appointments.get(i).getDoctor().getLeaveEndDate());
+                if(doctorLeaveStartDate.compareTo(requestedDate) == 0 || doctorLeaveEndDate.compareTo(requestedDate) == 0) {
+                    appointments.get(i).setDoctor(null);
+                } else if(requestedDate.compareTo(doctorLeaveStartDate) > 0 && requestedDate.compareTo(doctorLeaveEndDate) < 0) {
+                    appointments.get(i).setDoctor(null);
+                }
+
+            }
+            apptRepository.save(appointments.get(i));
+        }
+
         return apptRepository.findAll();
     }
-    @GetMapping("/appointment/{apptID}")
-    public ResponseEntity<Appointment> getAppointmentByID(@PathVariable (value = "apptID") Long apptID, Appointment apptDetails) throws ResourceNotFoundException {
-        Appointment appt = apptRepository.findById(apptID).orElseThrow(() -> new ResourceNotFoundException("Appointment not found"));
-
-        return ResponseEntity.ok().body(appt);
-    }
+//    @GetMapping("/appointment/{apptID}")
+//    public ResponseEntity<Appointment> getAppointmentByID(@PathVariable (value = "apptID") Long apptID, Appointment apptDetails) throws ResourceNotFoundException {
+//        Appointment appt = apptRepository.findById(apptID).orElseThrow(() -> new ResourceNotFoundException("Appointment not found"));
+//
+//        return ResponseEntity.ok().body(appt);
+//    }
 
     @GetMapping("/appointment/patient/{id}")
     public ResponseEntity<Appointment> getPatientAppointment(@PathVariable(value = "id") String userId) throws ParseException{
@@ -134,15 +151,17 @@ public class AppointmentController {
         }
 
 
-            DoctorSchedule doctorSchedule = new DoctorSchedule();
-            doctorSchedule.setDoctor(doctor);
-            doctorSchedule.setAppointmentDate(appt.getApptDate());
-            doctorSchedule.setAppointmentTime(appt.getApptTime());
-            doctorScheduleRepository.save(doctorSchedule);
-            appt.setUserProfile(patient);
-            appt.setDoctor(doctor);
-            apptRepository.save(appt);
-            return ResponseEntity.ok().body(appt);
+        appt.setUserProfile(patient);
+        appt.setDoctor(doctor);
+
+        apptRepository.save(appt);
+        DoctorSchedule doctorSchedule = new DoctorSchedule();
+        doctorSchedule.setDoctor(doctor);
+        doctorSchedule.setAppointmentDate(appt.getApptDate());
+        doctorSchedule.setAppointmentTime(appt.getApptTime());
+        doctorSchedule.setAppointment(appt);
+        doctorScheduleRepository.save(doctorSchedule);
+        return ResponseEntity.ok().body(appt);
 
         }
 
@@ -161,6 +180,9 @@ public class AppointmentController {
     public ResponseEntity deleteAppt(@PathVariable (value = "apptID") Long apptID) throws ResourceNotFoundException {
         Appointment appt = apptRepository.findById(apptID).orElseThrow(()-> new ResourceNotFoundException("Appointment not found: " + apptID));
         apptRepository.delete(appt);
+        DoctorSchedule doctorSchedule = doctorScheduleRepository.findById(appt.getApptID()).orElseThrow(()->
+                new ResourceNotFoundException("appointment not found on this time"));
+        doctorScheduleRepository.delete(doctorSchedule);
         return ResponseEntity.ok().build();
     }
 

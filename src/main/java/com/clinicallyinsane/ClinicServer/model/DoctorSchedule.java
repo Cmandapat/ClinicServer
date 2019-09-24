@@ -1,6 +1,7 @@
 package com.clinicallyinsane.ClinicServer.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -24,6 +25,19 @@ public class DoctorSchedule {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Doctor doctor;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "appointment_id")
+    private Appointment appointment;
+
+
+    public Appointment getAppointment() {
+        return appointment;
+    }
+
+    public void setAppointment(Appointment appointment) {
+        this.appointment = appointment;
+    }
 
     public long getId() {
         return id;
