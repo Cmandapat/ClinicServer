@@ -45,7 +45,7 @@ public class Doctor {
     private String leaveEndDate;
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "doctor", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "doctor", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Appointment> appointmentList;
 
 

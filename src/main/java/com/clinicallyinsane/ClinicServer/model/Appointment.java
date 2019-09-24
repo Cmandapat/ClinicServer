@@ -39,18 +39,17 @@ public class Appointment {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "doctor_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Doctor doctor;
 
     @Transient
-    private long doctorIdTest;
+    private long doctorID;
 
-    public void setDoctorId(long doctorIdTest) {
-        this.doctorIdTest = doctorIdTest;
+            public void setDoctorID(long doctorIdTest) {
+        this.doctorID = doctorIdTest;
     }
 
-    public long getDoctorId() {
-        return doctorIdTest;
+    public long getDoctorID() {
+        return doctorID;
     }
 
     public Appointment() {
@@ -102,5 +101,19 @@ public class Appointment {
 
     public void setDoctor(Doctor doctor) {
         this.doctor = doctor;
+    }
+
+
+    @Override
+    public String toString() {
+        return "Appointment{" +
+                "apptID=" + apptID +
+                ", symptoms='" + symptoms + '\'' +
+                ", apptDate='" + apptDate + '\'' +
+                ", apptTime='" + apptTime + '\'' +
+                ", userProfile=" + userProfile +
+                ", doctor=" + doctor +
+                ", doctorID=" + doctorID +
+                '}';
     }
 }

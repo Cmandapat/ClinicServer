@@ -65,6 +65,7 @@ public class UserProfile {
 	@Size(max = 100)
 	private String emailId;
 
+	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY,
 			cascade = CascadeType.ALL,mappedBy = "userProfile")
 	private UserCredentials userCredentials;
@@ -83,7 +84,7 @@ public class UserProfile {
 
 	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY,
-			cascade = CascadeType.ALL,mappedBy = "userProfile")
+			cascade = CascadeType.ALL,mappedBy = "userProfile",orphanRemoval = true)
 	private Appointment appointment;
 
 	@Transient

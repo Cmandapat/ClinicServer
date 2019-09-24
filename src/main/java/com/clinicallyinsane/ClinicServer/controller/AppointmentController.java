@@ -84,7 +84,8 @@ public class AppointmentController {
     //assuming that patient id is handled and sent, apptID auto incremented
     @PostMapping("/appointment/{id}")
     public ResponseEntity<Appointment> addAppointment(@PathVariable(name = "id") String patientId,@Valid @RequestBody Appointment appt) throws ResourceNotFoundException, ParseException {
-        Doctor doctor = doctorRepository.findById(appt.getDoctorId()).orElseThrow(()->new ResourceNotFoundException("doc not found"+ appt.getDoctorId()) );
+        System.out.println("appointment Doctor ID: "+appt.toString());
+        Doctor doctor = doctorRepository.findById(appt.getDoctorID()).orElseThrow(()->new ResourceNotFoundException("doc not found "+ appt.getDoctorID()) );
         UserProfile patient = userProfileRepository.findById(patientId).orElseThrow(()
         -> new ResourceNotFoundException("patient not found"));
         /*
@@ -159,12 +160,30 @@ public class AppointmentController {
     }
     //possibly updating Appointment
 
+    @PutMapping("/appointment/{apptId}")
+    public ResponseEntity<Appointment> updateAppointment(@PathVariable (value = "apptId") Long apptId,
+                                                          @RequestBody Appointment apptDetails) throws ResourceNotFoundException {
+        Appointment appt = apptRepository.findById(apptId).orElseThrow(()->
+                new ResourceNotFoundException("Appointment not found"));
+
+        Doctor doctor = doctorRepository.findById(apptDetails.getDoctorID()).orElseThrow(() -> new ResourceNotFoundException("doctor not found"));
+
+
+        appt.setSymptoms(apptDetails.getSymptoms());
+        appt.setApptTime(apptDetails.getApptTime());
+        appt.setApptDate(apptDetails.getApptDate());
+        appt.setDoctor(doctor);
+        Appointment updatedAppointment = apptRepository.save(appt);
+        return ResponseEntity.ok().build();
+    }
+
 
     @DeleteMapping("/appointment/{apptID}")
     public ResponseEntity deleteAppt(@PathVariable (value = "apptID") Long apptID) throws ResourceNotFoundException {
         Appointment appt = apptRepository.findById(apptID).orElseThrow(()-> new ResourceNotFoundException("Appointment not found: " + apptID));
+        appt.setDoctor(null);
         apptRepository.delete(appt);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok().body(appt);
     }
 
 
