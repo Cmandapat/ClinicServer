@@ -49,7 +49,7 @@ public class UserProfileController {
 	 */
 	@GetMapping("/UserProfiles/{id}")
 	public ResponseEntity<UserProfile> getUserProfileById(@PathVariable(value = "id") String userId,
-														   @RequestBody UserProfile userProfileDetails)
+														   UserProfile userProfileDetails)
 													      throws ResourceNotFoundException{
 		
 		UserProfile userProfile = userProfileRepository.findById(userId)
