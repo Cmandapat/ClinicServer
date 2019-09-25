@@ -46,13 +46,16 @@ public class Doctor implements Serializable {
 
 
     @JsonIgnore
-    @OneToMany(fetch = FetchType.EAGER, mappedBy = "doctor", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "doctor", cascade = CascadeType.ALL,orphanRemoval = true)
     private List<Appointment> appointmentList;
-
 
 
     public List<Appointment> getAppointmentList() {
         return appointmentList;
+    }
+    public void removeAppointment(Appointment app) {
+        appointmentList.remove(app);
+        app.setDoctor(this);
     }
 
     public void setAppointmentList(List<Appointment> appointmentList) {

@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
@@ -22,6 +23,9 @@ public class UserCredentialsController {
     @Autowired
     private UserProfileRepository userProfileRepository;
 
+
+    @GetMapping("/user")
+    public List<UserCredentials> userCredentialsList() {return userCredentialsRepository.findAll();}
 
     /**
      *

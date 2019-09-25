@@ -39,7 +39,7 @@ public class Appointment {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "doctor_id")
-    @OnDelete(action = OnDeleteAction.CASCADE)
+//    @OnDelete(action = OnDeleteAction.CASCADE)
     private Doctor doctor;
 
 

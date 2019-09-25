@@ -101,7 +101,7 @@ public class AppointmentController {
     //assuming that patient id is handled and sent, apptID auto incremented
     @PostMapping("/appointment/{id}")
     public ResponseEntity<Appointment> addAppointment(@PathVariable(name = "id") String patientId,@Valid @RequestBody Appointment appt) throws ResourceNotFoundException, ParseException {
-        Doctor doctor = doctorRepository.findById(appt.getDoctorId()).orElseThrow(()->new ResourceNotFoundException("doc not found"+ appt.getDoctorId()) );
+        Doctor doctor = doctorRepository.findById(appt.getDoctorID()).orElseThrow(()->new ResourceNotFoundException("doc not found"+ appt.getDoctorID()) );
         UserProfile patient = userProfileRepository.findById(patientId).orElseThrow(()
         -> new ResourceNotFoundException("patient not found"));
         /*
@@ -179,10 +179,13 @@ public class AppointmentController {
     @DeleteMapping("/appointment/{apptID}")
     public ResponseEntity deleteAppt(@PathVariable (value = "apptID") Long apptID) throws ResourceNotFoundException {
         Appointment appt = apptRepository.findById(apptID).orElseThrow(()-> new ResourceNotFoundException("Appointment not found: " + apptID));
+        Doctor d = doctorRepository.findById(appt.getDoctor().getId()).orElseThrow(()-> new ResourceNotFoundException("not found"));
+        //d.removeAppointment(appt);
         apptRepository.delete(appt);
-        DoctorSchedule doctorSchedule = doctorScheduleRepository.findById(appt.getApptID()).orElseThrow(()->
-                new ResourceNotFoundException("appointment not found on this time"));
-        doctorScheduleRepository.delete(doctorSchedule);
+//        DoctorSchedule doctorSchedule = doctorScheduleRepository.findById(appt.getApptID()).orElseThrow(()->
+//                new ResourceNotFoundException("appointment not found on this time"));
+//        doctorScheduleRepository.delete(doctorSchedule);
+
         return ResponseEntity.ok().build();
     }
 

@@ -49,7 +49,7 @@ public class UserProfileController {
 	 */
 	@GetMapping("/UserProfiles/{id}")
 	public ResponseEntity<UserProfile> getUserProfileById(@PathVariable(value = "id") String userId,
-														  @Valid @RequestBody UserProfile userProfileDetails)
+														   @RequestBody UserProfile userProfileDetails)
 													      throws ResourceNotFoundException{
 		
 		UserProfile userProfile = userProfileRepository.findById(userId)
@@ -83,7 +83,7 @@ public class UserProfileController {
 	 */
 	@PutMapping("/UserProfiles/{id}")
 	public ResponseEntity<UserProfile> updateUserProfile(@PathVariable(value = "id") String userId,
-			  											 @Valid @RequestBody UserProfile userProfileDetails)
+			  											 @RequestBody UserProfile userProfileDetails)
 			  											 throws ResourceNotFoundException{
 		UserProfile userProfile = userProfileRepository.findById(userId)
 				  .orElseThrow(()-> new ResourceNotFoundException("UserProfile not found with id:" + userId));

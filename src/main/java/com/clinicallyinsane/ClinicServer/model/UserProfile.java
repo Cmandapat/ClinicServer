@@ -72,7 +72,7 @@ public class UserProfile {
 
 	@JsonIgnore
 	@OneToOne(fetch = FetchType.LAZY,
-			cascade = CascadeType.ALL,mappedBy = "userProfile")
+			cascade = CascadeType.ALL,mappedBy = "userProfile",orphanRemoval=true)
 	private Appointment appointment;
 
 	@Transient
@@ -114,6 +114,7 @@ public class UserProfile {
 		this.phoneNumber = phoneNumber;
 		this.emailId = emailId;
 	}
+
 
 	public String getUserID() {
 		return userID;
