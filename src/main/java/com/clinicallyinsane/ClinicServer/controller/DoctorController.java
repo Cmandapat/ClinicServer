@@ -106,7 +106,7 @@ public class DoctorController {
                                                   @RequestBody Doctor doctorDetails) throws ResourceNotFoundException{
 
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()-> new ResourceNotFoundException("Doctor not found::" + doctorId));
-        doctor.setLeave(doctorDetails.getLeave());
+        doctor.setLeave(1);
         doctor.setLeaveStartDate(doctorDetails.getLeaveStartDate());
         doctor.setLeaveEndDate(doctorDetails.getLeaveEndDate());
         final Doctor updatedDoctor = doctorRepository.save(doctor);
@@ -126,7 +126,7 @@ public class DoctorController {
                                                     @RequestBody Doctor doctorDetails) throws ResourceNotFoundException{
 
         Doctor doctor = doctorRepository.findById(doctorId).orElseThrow(()-> new ResourceNotFoundException("Doctor not found::" + doctorId));
-        doctor.setLeave(1);
+        doctor.setLeave(0);
         doctor.setLeaveStartDate(null);
         doctor.setLeaveEndDate(null);
         final Doctor updatedDoctor = doctorRepository.save(doctor);

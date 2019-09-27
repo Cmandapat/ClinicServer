@@ -48,8 +48,7 @@ public class UserProfileController {
 	ResponseEntity is returned with the User Profile we received
 	 */
 	@GetMapping("/UserProfiles/{id}")
-	public ResponseEntity<UserProfile> getUserProfileById(@PathVariable(value = "id") String userId,
-														   @RequestBody UserProfile userProfileDetails)
+	public ResponseEntity<UserProfile> getUserProfileById(@PathVariable(value = "id") String userId)
 													      throws ResourceNotFoundException{
 		
 		UserProfile userProfile = userProfileRepository.findById(userId)

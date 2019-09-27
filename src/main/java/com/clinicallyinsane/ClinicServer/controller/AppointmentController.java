@@ -82,17 +82,17 @@ public class AppointmentController {
         }
 
         Appointment appointment = patientAppointment.get(0);
-        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date requestedDate = sdf.parse(appointment.getApptDate());
-        if(appointment.getDoctor().getLeave() == 1) {
-            Date doctorLeaveStartDate = sdf.parse(appointment.getDoctor().getLeaveStartDate());
-            Date doctorLeaveEndDate = sdf.parse(appointment.getDoctor().getLeaveEndDate());
-            if(doctorLeaveStartDate.compareTo(requestedDate) == 0 || doctorLeaveEndDate.compareTo(requestedDate) == 0) {
-                appointment.setDoctor(null);
-            } else if(requestedDate.compareTo(doctorLeaveStartDate) > 0 && requestedDate.compareTo(doctorLeaveEndDate) < 0) {
-                appointment.setDoctor(null);
-            }
-        }
+//        DateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        Date requestedDate = sdf.parse(appointment.getApptDate());
+//        if(appointment.getDoctor().getLeave() == 1) {
+//            Date doctorLeaveStartDate = sdf.parse(appointment.getDoctor().getLeaveStartDate());
+//            Date doctorLeaveEndDate = sdf.parse(appointment.getDoctor().getLeaveEndDate());
+//            if(doctorLeaveStartDate.compareTo(requestedDate) == 0 || doctorLeaveEndDate.compareTo(requestedDate) == 0) {
+//                appointment.setDoctor(null);
+//            } else if(requestedDate.compareTo(doctorLeaveStartDate) > 0 && requestedDate.compareTo(doctorLeaveEndDate) < 0) {
+//                appointment.setDoctor(null);
+//            }
+//        }
 
         apptRepository.save(appointment);
         return ResponseEntity.ok().body(appointment);

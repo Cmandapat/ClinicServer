@@ -59,7 +59,7 @@ public class UserProfile {
 
 	@NotNull
 	@Column(name = "phone")
-	private int phoneNumber;
+	private long phoneNumber;
 	@NotNull
 	@Column(name = "email")
 	@Size(max = 100)
@@ -103,7 +103,7 @@ public class UserProfile {
 
 	public UserProfile() {}
 
-	public UserProfile(String userID, String firstName, String lastName, String dob, String gender, String presentAddress, String permanentAddress, int phoneNumber, String emailId) {
+	public UserProfile(String userID, String firstName, String lastName, String dob, String gender, String presentAddress, String permanentAddress, long phoneNumber, String emailId) {
 		this.userID = userID;
 		this.firstName = firstName;
 		this.lastName = lastName;
@@ -144,7 +144,7 @@ public class UserProfile {
 		return permanentAddress;
 	}
 
-	public int getPhoneNumber() {
+	public long getPhoneNumber() {
 		return phoneNumber;
 	}
 
@@ -180,7 +180,7 @@ public class UserProfile {
 		this.permanentAddress = permanentAddress;
 	}
 
-	public void setPhoneNumber(int phoneNumber) {
+	public void setPhoneNumber(long phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
 

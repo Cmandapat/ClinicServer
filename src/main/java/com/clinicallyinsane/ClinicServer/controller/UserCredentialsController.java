@@ -55,6 +55,7 @@ public class UserCredentialsController {
 
         if(userCredentials.getPassword().equals(userPw)) {
             userCredentials.setLoginStatus(1);
+            userCredentialsRepository.save(userCredentials);
             return ResponseEntity.ok().body(userCredentials);
         } else {
             return ResponseEntity.notFound().build();
